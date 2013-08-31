@@ -150,7 +150,7 @@ define('_AM_OLEDRION_FOOTER', 'Text to display in the category footer');
 
 define('_AM_OLEDRION_RESTRICT_TEXT', 'Text to display when orders are restricted to registered users');
 
-// Pour les réductions
+// For tariff reductions
 define('_AM_OLEDRION_DISCOUNT_INFORMATION', 'Discount information');
 define('_AM_OLEDRION_DISCOUNT_TITLE', 'Discount title (used internally)');
 define('_AM_OLEDRION_DISCOUNT_DESCRIPTION', 'Discount description (for you clients)');
