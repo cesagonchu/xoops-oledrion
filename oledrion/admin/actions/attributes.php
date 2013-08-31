@@ -19,14 +19,14 @@
  */
 
 /**
- * Gestion des attributs produits
+ * Management of product attributes
  */
 if (!defined("OLEDRION_ADMIN")) exit();
-global $baseurl; // Pour faire taire les warnings de Zend Studio
+global $baseurl; // For silencing warnings from Zend Studio
 $operation = 'attributes';
 
 /**
- * Suppression de l'attribut qui se trouve en session
+ * Remove the attribute that is in session
  *
  * @return void
  */
@@ -40,7 +40,7 @@ function removeAttributInSession()
 
 switch ($action) {
     // ****************************************************************************************************************
-    case 'default': // Liste des attributs produits
+    case 'default': // List of product attributes
         // ****************************************************************************************************************
         xoops_cp_header();
 
@@ -184,7 +184,7 @@ switch ($action) {
         break;
 
     // ****************************************************************************************************************
-    case 'copy': // Dupliquer un attribut
+    case 'copy': // Duplicate an attribute
         // ****************************************************************************************************************
         xoops_cp_header();
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -205,7 +205,7 @@ switch ($action) {
         break;
 
     // ****************************************************************************************************************
-    case 'delete': // Suppression d'un attribut
+    case 'delete': // Deleting an attribute
         // ****************************************************************************************************************
         xoops_cp_header();
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -245,8 +245,8 @@ switch ($action) {
         break;
 
     // ****************************************************************************************************************
-    case 'add': // Ajout d'un attribut
-    case 'edit': // Edition d'un attribut
+    case 'add': // Adding an attribute
+    case 'edit': // Editing an attribute
         // ****************************************************************************************************************
         xoops_cp_header();
         removeAttributInSession();
@@ -272,10 +272,10 @@ switch ($action) {
             $label_submit = _AM_OLEDRION_ADD;
             $edit = false;
         }
-        // Appel à jQuery
+        // Call to jQuery
         $xoTheme->addScript("browse.php?Frameworks/jquery/jquery.js");
         oledrion_utils::callJavascriptFile('noconflict.js', false, true);
-        // Appel du fichier langue
+        // Call the language file
         oledrion_utils::callJavascriptFile('messages.js', true, true);
 
         $sform = new XoopsThemeForm($title, 'frm' . $operation, $baseurl);
@@ -296,8 +296,8 @@ switch ($action) {
         $typeSelect->addOptionArray($item->getTypesList());
         $sform->addElement($typeSelect, true);
 
-        // Paramétrage (pour les boutons radio et cases à cocher, le délimiteur, pour les listes déroulantes, le nombre d'éléments visibles et la sélection multiple)
-        // Les boutons radio et cases à cocher
+        // Setting (for radio buttons and check boxes, the delimiter for the dropdowns, the number of visible items and multiple selection)
+        // Radio buttons and check boxes
         $attributeParameters = "<div name='attributeParameters' id='attributeParameters'>\n";
         $defaultValue = OLEDRION_ATTRIBUTE_CHECKBOX_WHITE_SPACE;
         if ($edit) {
@@ -311,7 +311,7 @@ switch ($action) {
         $attributeParameters .= $parameterButtonOption . "\n";
         $attributeParameters .= "</div>\n";
 
-        // Les listes déroulantes
+        // Drop-down lists
         $attributeParameters .= "<div name='attributeParametersSelect' id='attributeParametersSelect'>\n";
         $defaultValue1 = OLEDRION_ATTRIBUTE_SELECT_VISIBLE_OPTIONS;
         $defaultValue2 = OLEDRION_ATTRIBUTE_SELECT_MULTIPLE;
@@ -335,10 +335,10 @@ switch ($action) {
         $sform->addElement(new XoopsFormLabel(_AM_OLEDRION_ATTRIBUTE_PARAMETERS, $attributeParameters));
         // *******************************************
 
-        // Attribut requis
+        // Required attribute
         $sform->addElement(new XoopsFormRadioYN(_AM_OLEDRION_ATTRIBUTE_REQUIRED, 'attribute_mandatory', $item->getVar('attribute_mandatory')), true);
 
-        // Les options
+        // The options
         $divContent = "<div class='ajaxOptions' id='ajaxOptions'></div>";
         $ajaxOptions = new XoopsFormLabel(_AM_OLEDRION_ATTRIBUTE_OPTIONS, $divContent);
         $sform->addElement($ajaxOptions, false);
@@ -354,7 +354,7 @@ switch ($action) {
         break;
 
     // ****************************************************************************************************************
-    case 'saveedit': // Sauvegarde de l'option
+    case 'saveedit': // Backup of the option
         // ****************************************************************************************************************
         xoops_cp_header();
         $id = isset($_POST['attribute_id']) ? intval($_POST['attribute_id']) : 0;
@@ -371,10 +371,10 @@ switch ($action) {
 
         $item->setVars($_POST);
         $attribute_type = isset($_POST['attribute_type']) ? intval($_POST['attribute_type']) : 0;
-        if ($attribute_type == OLEDRION_ATTRIBUTE_SELECT) { // Liste déroulante
+        if ($attribute_type == OLEDRION_ATTRIBUTE_SELECT) { // Dropdown list
             $item->setVar('attribute_option1', intval($_POST['option2']));
             $item->setVar('attribute_option2', intval($_POST['option3']));
-        } else { // Bouton radio ou case à cocher
+        } else { // Radio button or checkbox
             $item->setVar('attribute_option1', intval($_POST['option1']));
         }
 
@@ -403,7 +403,7 @@ switch ($action) {
         break;
 
     // ****************************************************************************************************************
-    case 'ajaxoptions': // Traitement en Ajax des options
+    case 'ajaxoptions': // Ajax treatment for options
         // ****************************************************************************************************************
         if (!isset($xoopsUser) || !is_object($xoopsUser)) {
             exit;
@@ -423,7 +423,7 @@ switch ($action) {
         require_once OLEDRION_CLASS_PATH . 'oledrion_attributes.php';
 
         if (!isset($_SESSION['oledrion_attribute'])) {
-            if ($attribute_id == 0) { // Création, rajouter une zone
+            if ($attribute_id == 0) { // Creation, add a zone
                 $attribute = $oledrion_handlers->h_oledrion_attributes->create(true);
             } else {
                 $attribute = $oledrion_handlers->h_oledrion_attributes->get($attribute_id);
@@ -436,7 +436,7 @@ switch ($action) {
             $attribute = unserialize($_SESSION['oledrion_attribute']);
         }
 
-        if (isset($_POST['formcontent'])) { // Traitement du contenu actuel
+        if (isset($_POST['formcontent'])) { // Treatment of current content
             $data = array();
             parse_str(urldecode($_POST['formcontent']), $data);
             $optionsCount = isset($data['optionsCount']) ? intval($data['optionsCount']) : 0;
@@ -458,25 +458,25 @@ switch ($action) {
 
         if (isset($_POST['subaction'])) {
             switch (xoops_trim(strtolower($_POST['subaction']))) {
-                case 'delete': // Suppression d'une option de l'attribut
+                case 'delete': // Removing an optional attribute
                     $option = isset($_POST['option']) ? intval($_POST['option']) : false;
                     if ($option !== false) {
                         $attribute->deleteOption($option);
                     }
                     break;
 
-                case 'add': // Ajout d'une option vide (à la fin)
+                case 'add': // Adding a blank option (at the end)
                     $attribute->addEmptyOption();
                     break;
 
-                case 'up': // Déplacement d'une option vers le haut
+                case 'up': // Moving an option upwards
                     $option = isset($_POST['option']) ? intval($_POST['option']) : false;
                     if ($option !== false) {
                         $attribute->moveOptionUp($option);
                     }
                     break;
 
-                case 'down': // Déplacement d'une option vers le haut
+                case 'down': // Move an option downwards
                     $option = isset($_POST['option']) ? intval($_POST['option']) : false;
                     if ($option !== false) {
                         $attribute->moveOptionDown($option);
@@ -524,9 +524,9 @@ switch ($action) {
                 if (oledrion_utils::getModuleOption('attributes_stocks')) {
                     $content .= "<td align='center'><input type='text' name='stock$counter' id='stock$counter' size='15' maxlength='10' value='" . $option['stock'] . "' /></td>\n";
                 }
-                // Les actions
+                // The actions
                 $content .= "<td align='center'>";
-                // Suppression
+                // Deleting
                 $content .= "<img class='btnremove' alt='$delete' title='$delete' style='border: 0; cursor:pointer;' name='btnremove-$counter' id='btnremove-$counter' src='" . OLEDRION_IMAGES_URL . "smalldelete.png' />";
                 if ($counter > 0) { // Up
                     $content .= "<img class='btnUp' alt='$up' title='$up' style='border: 0; cursor:pointer;' name='btnUp-$counter' id='btnUp-$counter' src='" . OLEDRION_IMAGES_URL . "smallup.png' />";
